@@ -1,0 +1,2 @@
+# OSC CourseHub
+OSC CourseHub is a GraphQL API designed for a College. It manages a database of distance learning courses and course collections, allowing internal users to retrieve and modify course data. The API is built with TypeScript, Node.js, Apollo Server, and PostgreSQL, and it includes JWT-based authentication and role-based authorization for secure operations.
