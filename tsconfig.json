@@ -1,0 +1,16 @@
+{
+   "compilerOptions": {
+     "target": "ES2019",
+     "module": "commonjs",
+     "lib": ["es2017", "esnext.asynciterable"],
+     "outDir": "./dist",
+     "rootDir": "src",
+     "strict": true,
+     "esModuleInterop": true,
+     "skipLibCheck": true,
+     "emitDecoratorMetadata": true,
+     "experimentalDecorators": true
+   },
+   "include": ["src/**/*.ts"]
+ }
+ 
