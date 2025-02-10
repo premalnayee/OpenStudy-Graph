@@ -5,6 +5,7 @@ import { createSchema } from "./schema";
 import { createConnection } from "typeorm";
 import dotenv from "dotenv";
 import { authMiddleware } from "./middleware/auth";
+import { AppDataSource } from "./data-source";
 
 declare module "express-serve-static-core" {
   interface Request {
@@ -16,8 +17,8 @@ dotenv.config();
 
 (async () => {
   // Establish database connection using TypeORM.
-  await createConnection();
-
+  await AppDataSource.initialize().catch((error) => console.log(error));
+  
   // Build the GraphQL schema using our resolvers.
   const schema = await createSchema();
 
