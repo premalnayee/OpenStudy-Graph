@@ -4,6 +4,13 @@ import { ApolloServer } from "apollo-server-express";
 import { createSchema } from "./schema";
 import { createConnection } from "typeorm";
 import dotenv from "dotenv";
+import { authMiddleware } from "./middleware/auth";
+
+declare module "express-serve-static-core" {
+  interface Request {
+    user?: any;
+  }
+}
 
 dotenv.config();
 
@@ -15,10 +22,13 @@ dotenv.config();
   const schema = await createSchema();
 
   // Create and start the Apollo Server.
-  const server = new ApolloServer({ schema });
+  const server = new ApolloServer({ schema,
+    context: ({ req }) => ({ user: req.user })
+   });
   await server.start();
 
   const app = express();
+  app.use(authMiddleware);
   server.applyMiddleware({ app });
 
   const port = process.env.PORT || 4000;
