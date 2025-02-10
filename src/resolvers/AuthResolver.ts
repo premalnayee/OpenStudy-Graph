@@ -10,10 +10,10 @@ dotenv.config();
 @ObjectType()
 class AuthResponse {
   @Field()
-  token: string;
+  token!: string;
 
   @Field(() => User)
-  user: User;
+  user!: User;
 }
 
 @Resolver()
