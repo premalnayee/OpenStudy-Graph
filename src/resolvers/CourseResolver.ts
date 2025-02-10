@@ -23,7 +23,8 @@ export class CourseResolver {
     @Query(() => Course, { nullable: true })
   async course(@Arg("id", () => ID) id: string): Promise<Course | undefined> {
     const courseId = parseInt(id, 10); // Convert the string id to a number
-    return this.courseRepo.findOne({ where: { id: courseId } });
+    const course = await this.courseRepo.findOne({ where: { id: courseId } });
+    return course || undefined;
   }
 
   @Query(() => [Collection])
@@ -33,7 +34,9 @@ export class CourseResolver {
 
   @Query(() => Collection, { nullable: true })
   async collection(@Arg("id", () => ID) id: string): Promise<Collection | undefined> {
-    return this.collectionRepo.findOne(id, { relations: ["courses"] });
+    const collectionId = parseInt(id, 10);
+    const collection = await this.collectionRepo.findOne({ where: { id: collectionId }, relations: ["courses"] });
+    return collection || undefined;
   }
 
   // Protected mutation; context will contain the authenticated user
@@ -48,7 +51,7 @@ export class CourseResolver {
     }
     const course = this.courseRepo.create(input);
     if (input.collectionId) {
-      const collection = await this.collectionRepo.findOne(input.collectionId);
+      const collection = await this.collectionRepo.findOneBy({ id: input.collectionId });
       if (!collection) {
         throw new Error("Invalid collection");
       }
@@ -67,13 +70,14 @@ export class CourseResolver {
       throw new Error("Not authenticated");
     }
     // Optionally check if ctx.user is allowed to update this course
-    let course = await this.courseRepo.findOne(id);
+    const courseId = parseInt(id, 10);
+    let course = await this.courseRepo.findOneBy({ id: courseId });
     if (!course) {
       throw new Error("Course not found");
     }
     Object.assign(course, input);
     if (input.collectionId) {
-      const collection = await this.collectionRepo.findOne(input.collectionId);
+      const collection = await this.collectionRepo.findOneBy({ id: input.collectionId });
       if (!collection) {
         throw new Error("Invalid collection");
       }
