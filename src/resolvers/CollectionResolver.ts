@@ -13,6 +13,7 @@ export class CollectionResolver {
 
   @Query(() => Collection, { nullable: true })
   async collection(@Arg("id", () => Int) id: number): Promise<Collection | undefined> {
-    return this.collectionRepository.findOne(id, { relations: ["courses"] });
+    const result = await this.collectionRepository.findOne({ where: { id }, relations: ["courses"] });
+    return result || undefined; // if result is null, returns undefined
   }
 }
