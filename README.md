@@ -118,7 +118,7 @@ const server = new ApolloServer({
 });
 ```
 
-Deployment
+## Deployment
 OSC CourseHub has been deployed to Render, please message me for a link.
 
 Contributing
