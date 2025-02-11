@@ -1,9 +1,9 @@
 import { Resolver, Mutation, Arg, ObjectType, Field } from "type-graphql";
 import { User } from "../entities/User";
-import { getRepository } from "typeorm";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { AppDataSource } from "../data-source";
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ class AuthResponse {
 
 @Resolver()
 export class AuthResolver {
-  private userRepository = getRepository(User);
+  private userRepository = AppDataSource.getRepository(User);
 
   @Mutation(() => User)
   async register(
