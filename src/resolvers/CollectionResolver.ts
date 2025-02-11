@@ -1,10 +1,10 @@
 import { Resolver, Query, Arg, Int } from "type-graphql";
 import { Collection } from "../entities/Collection";
-import { getRepository } from "typeorm";
+import { AppDataSource } from "../data-source";
 
 @Resolver()
 export class CollectionResolver {
-  private collectionRepository = getRepository(Collection);
+  private collectionRepository = AppDataSource.getRepository(Collection);
 
   @Query(() => [Collection])
   async collections(): Promise<Collection[]> {
