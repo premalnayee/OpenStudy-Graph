@@ -1,13 +1,13 @@
-import { getRepository } from "typeorm";
 import { Course } from "../entities/Course";
 import { Collection } from "../entities/Collection";
 import { Resolver, Query, Mutation, Arg, ID, Int, Ctx } from "type-graphql";
 import { CourseInput } from "../types/CourseInput";
+import { AppDataSource } from "../data-source";
 
 @Resolver()
 export class CourseResolver {
-  private courseRepo = getRepository(Course);
-  private collectionRepo = getRepository(Collection);
+  private courseRepo = AppDataSource.getRepository(Course);
+  private collectionRepo = AppDataSource.getRepository(Collection);
 
   @Query(() => [Course])
   async courses(
