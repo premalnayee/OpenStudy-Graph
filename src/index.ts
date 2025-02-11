@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginCacheControl } from "apollo-server-core";
 import { createSchema } from "./schema";
 import dotenv from "dotenv";
 import { authMiddleware } from "./middleware/auth";
@@ -25,7 +26,13 @@ declare module "express-serve-static-core" {
   // Create and start the Apollo Server with environment-based context.
   const server = new ApolloServer({ 
     schema,
-    context: ({ req }) => ({ user: req.user })
+    context: ({ req }) => ({ user: req.user }),
+    cache: "bounded",
+    plugins: [
+      ApolloServerPluginCacheControl({
+        defaultMaxAge: 5, // Set default max age for cache
+      }),
+    ],
   });
   await server.start();
 
